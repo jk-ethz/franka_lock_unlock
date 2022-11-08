@@ -27,3 +27,18 @@ optional arguments:
   -p, --persistent  Keep the connection to the robot open persistently.
   -c, --fci         Activate the FCI.
 ```
+
+## ROS Package
+
+This repository exports a ROS package. It can be installed and invoked by the following commands.
+
+### Installation
+
+```
+catkin build franka_lock_unlock
+```
+
+### Usage
+```
+rosrun franka_lock_unlock __init__.py hostname username password
+```
