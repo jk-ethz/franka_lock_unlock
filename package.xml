@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>franka_lock_unlock</name>
+  <version>4.2.1</version>
+  <description>Lock or unlock the Franka Emika Panda joint brakes programmatically.</description>
+
+  <author email="ethz@juliankeller.net">jk-ethz</author>
+  <maintainer email="ethz@juliankeller.net">jk-ethz</maintainer>
+
+  <license>AGPLv3</license>
+  <url type="website">https://github.com/jk-ethz/franka_lock_unlock</url> -->
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>rospy</depend>
+
+</package>
