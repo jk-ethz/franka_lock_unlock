@@ -33,7 +33,7 @@ class FrankaLockUnlock:
         self._token_id = None
         self._relock = relock
         atexit.register(self._cleanup)
-    
+
     def _cleanup(self):
         print("Cleaning up...")
         if self._relock:
@@ -42,6 +42,7 @@ class FrankaLockUnlock:
             self._release_token()
         if self._logged_in:
             self._logout()
+        print("Successfully cleaned up.")
 
     @staticmethod
     def _encode_password(username, password):
@@ -102,7 +103,7 @@ class FrankaLockUnlock:
         self._token = None
         self._token_id = None
         print("Successfully released control token.")
-    
+
     def _activate_fci(self):
         print("Activating FCI...")
         fci_request = self._session.post(urljoin(self._hostname, f'/admin/api/control-token/fci'), \
@@ -168,7 +169,7 @@ if __name__ == '__main__':
 
     franka_lock_unlock = FrankaLockUnlock(hostname=args.hostname, username=args.username, password=args.password, relock=args.relock)
     franka_lock_unlock.run(unlock=args.unlock, wait=args.wait, request=args.request, persistent=args.persistent, fci=args.fci)
-    
+
     if args.persistent:
         print("Keeping persistent connection...")
         Event().wait()
