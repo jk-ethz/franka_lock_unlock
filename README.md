@@ -40,5 +40,5 @@ catkin build franka_lock_unlock
 
 ### Usage
 ```
-rosrun franka_lock_unlock __init__.py hostname username password
+rosrun franka_lock_unlock __init__.py <PARAMS>
 ```
