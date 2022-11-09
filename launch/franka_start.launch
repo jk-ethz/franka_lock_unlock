@@ -12,7 +12,7 @@
           args="$(arg hostname) $(arg username) $(arg password) -u -l -w -r -p -c"
     />
 
-    <node name="franka_control" pkg="franka_control" type="franka_control_node" output="screen" required="true" respawn="true" >
+    <node name="franka_control" pkg="franka_control" type="franka_control_node" output="screen" respawn="true" >
         <param name="robot_ip" value="$(arg hostname)" />
     </node>
 </launch>

@@ -164,7 +164,7 @@ if __name__ == '__main__':
     parser.add_argument('-r', '--request', action='store_true', help='Request control by confirming physical access to the robot in case the robot web UI is currently in use.')
     parser.add_argument('-p', '--persistent', action='store_true', help='Keep the connection to the robot open persistently.')
     parser.add_argument('-c', '--fci', action='store_true', help='Activate the FCI.')
-    args = parser.parse_args()
+    args, _ = parser.parse_known_args()
     assert not args.relock or args.persistent, "Relocking without persistence would cause an immediate unlock-lock cycle."
 
     franka_lock_unlock = FrankaLockUnlock(hostname=args.hostname, username=args.username, password=args.password, relock=args.relock)
