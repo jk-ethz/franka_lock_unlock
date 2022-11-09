@@ -129,6 +129,7 @@ class FrankaLockUnlock:
             while True:
                 self._request_token(physically=request)
                 try:
+                    # Consider the timeout of 30 s for requesting physical access to the robot
                     for _ in range(20) if request else count():
                         if (not wait and not request) or self._is_active_token():
                             print('Successfully acquired control over the robot.')
@@ -141,6 +142,8 @@ class FrankaLockUnlock:
                         elif wait:
                             print('Please confirm the request message in the web interface on the logged in user.')
                         sleep(1)
+                    # In case physical access was not confirmed, try again
+                    self._release_token()
                 finally:
                     if not persistent:
                         self._release_token()
