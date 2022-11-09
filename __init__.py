@@ -120,7 +120,7 @@ class FrankaLockUnlock:
         print(f'Successfully {"unlocked" if unlock else "locked"} the robot.')
 
     def run(self, unlock: bool = False, force: bool = False, wait: bool = False, request: bool = False, persistent: bool = False, fci: bool = False) -> None:
-        assert not args.request or args.wait, "Requesting control without waiting for obtaining control is not supported."
+        assert not request or wait, "Requesting control without waiting for obtaining control is not supported."
         assert not fci or unlock, "Activating FCI without unlocking is not possible."
         assert not fci or persistent, "Activating FCI without persistence is not possible."
         self._login()

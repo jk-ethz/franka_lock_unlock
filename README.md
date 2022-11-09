@@ -6,9 +6,10 @@ Also supports the activation of the Franka Control Interface (FCI) and other opt
 
 ## Problem Description
 
-While the Franka Panda is a great robot for research, it lacks the option of unlocking or locking its joints from a different source other than the Franka Desk Web UI. That is now possible with the introduction of this package.
+While the Franka Panda is a great robot for research and industrial use cases, it lacks the option of unlocking or locking its joints from a different source other than the Franka Desk Web UI. However, this is crucial if you want to automate the entire startup and shutdown phase of the robot. That is now possible with the introduction of this package.
 
 ## Command-Line Usage
+Ensure to have python3 installed.
 
 ```
 usage: ./__init__.py [-h] [-u] [-l] [-w] [-r] [-p] [-c] hostname username password
@@ -30,15 +31,33 @@ optional arguments:
 
 ## ROS Package
 
-This repository exports a ROS package. It can be installed and invoked by the following commands.
+This repository exports a ROS package. This is useful for starting up the robot and FCI by means of a single launch file that also spawns the `franka_ros` interface at the same time. It will speed up your entire robot workflow dramatically.
+
+The ROS package can be installed and invoked by the following commands.
 
 ### Installation
 
 ```
+git clone https://github.com/jk-ethz/franka_lock_unlock
 catkin build franka_lock_unlock
 ```
 
-### Usage
+### Simple Usage
+
 ```
 rosrun franka_lock_unlock __init__.py <PARAMS>
+```
+
+### Advanced Usage
+
+If you want to launch the `franka_control` node while unlocking the joints, ensure to add the `respawn=true` parameter to the node tag, such that the control node retries to connect to the robot until all joints have been fully unlocked and the FCI has been activated.
+
+<pre>
+&lt;node name="franka_control" pkg="franka_control" type="franka_control_node" output="screen" <b>respawn="true"</b> /&gt;
+</pre>
+
+The following launch file unlocks the joints, activates the FCI and connects to the robot via ROS. Also, it allows to re-lock the brakes automatically as soon as the launch file is exited via `SIGINT` or `SIGTERM` (`CTRL+C`).
+
+```
+roslaunch franka_lock_unlock franka_start.launch hostname:=<HOSTNAME> username:=<USERNAME> password:=<PASSWORD>
 ```
