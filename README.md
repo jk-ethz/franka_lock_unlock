@@ -12,7 +12,7 @@ While the Franka Panda is a great robot for research and industrial use cases, i
 Ensure to have python3 installed.
 
 ```
-usage: ./__init__.py [-h] [-u] [-l] [-w] [-r] [-p] [-c] hostname username password
+usage: ./__init__.py [-h] [-u] [-l] [-w] [-r] [-p] [-c] [-i] hostname username password
 
 positional arguments:
   hostname          The Franka Desk IP address or hostname, for example "1.2.3.4".
@@ -21,12 +21,13 @@ positional arguments:
 
 optional arguments:
   -h, --help        show this help message and exit
-  -u, --unlock      Unlock the brakes.
+  -u, --unlock      Unlock the brakes. Otherwise, lock them.
   -l, --relock      Relock the brakes on exit.
   -w, --wait        Wait in case the robot web UI is currently in use.
   -r, --request     Request control by confirming physical access to the robot in case the robot web UI is currently in use.
   -p, --persistent  Keep the connection to the robot open persistently.
   -c, --fci         Activate the FCI.
+  -i, --home        Home the gripper.
 ```
 
 ## ROS Package

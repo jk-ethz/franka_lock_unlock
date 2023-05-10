@@ -111,18 +111,26 @@ class FrankaLockUnlock:
         assert fci_request.status_code == 200, "Error activating FCI."
         print("Successfully activated FCI.")
 
+    def _home_gripper(self):
+        print("Homing the gripper...")
+        action = self._session.post(urljoin(self._hostname, f'/desk/api/gripper/homing'), \
+                                    headers={'X-Control-Token': self._token})
+        assert action.status_code == 200, "Error homing gripper."
+        print(f'Successfully homed the gripper.')
+
     def _lock_unlock(self, unlock: bool, force: bool = False):
         print(f'{"Unlocking" if unlock else "Locking"} the robot...')
         action = self._session.post(urljoin(self._hostname, f'/desk/api/robot/{"open" if unlock else "close"}-brakes'), \
-                                                        files={'force': force},
-                                                        headers={'X-Control-Token': self._token})
+                                    files={'force': force},
+                                    headers={'X-Control-Token': self._token})
         assert action.status_code == 200, "Error requesting brake open/close action."
         print(f'Successfully {"unlocked" if unlock else "locked"} the robot.')
 
-    def run(self, unlock: bool = False, force: bool = False, wait: bool = False, request: bool = False, persistent: bool = False, fci: bool = False) -> None:
+    def run(self, unlock: bool = False, force: bool = False, wait: bool = False, request: bool = False, persistent: bool = False, fci: bool = False, home: bool = False) -> None:
         assert not request or wait, "Requesting control without waiting for obtaining control is not supported."
         assert not fci or unlock, "Activating FCI without unlocking is not possible."
         assert not fci or persistent, "Activating FCI without persistence is not possible."
+        assert not home or unlock, "Homing the gripper without unlocking is not possible."
         self._login()
         try:
             assert self._token is not None or self._get_active_token_id() is None or wait, "Error requesting control, the robot is currently in use."
@@ -134,6 +142,8 @@ class FrankaLockUnlock:
                         if (not wait and not request) or self._is_active_token():
                             print('Successfully acquired control over the robot.')
                             self._lock_unlock(unlock=unlock)
+                            if home:
+                                self._home_gripper()
                             if fci:
                                 self._activate_fci()
                             return
@@ -167,12 +177,13 @@ if __name__ == '__main__':
     parser.add_argument('-r', '--request', action='store_true', help='Request control by confirming physical access to the robot in case the robot web UI is currently in use.')
     parser.add_argument('-p', '--persistent', action='store_true', help='Keep the connection to the robot open persistently.')
     parser.add_argument('-c', '--fci', action='store_true', help='Activate the FCI.')
+    parser.add_argument('-i', '--home', action='store_true', help='Home the gripper.')
     args, _ = parser.parse_known_args()
     assert not args.relock or args.unlock, "Relocking without prior unlocking is not possible."
     assert not args.relock or args.persistent, "Relocking without persistence would cause an immediate unlock-lock cycle."
 
     franka_lock_unlock = FrankaLockUnlock(hostname=args.hostname, username=args.username, password=args.password, relock=args.relock)
-    franka_lock_unlock.run(unlock=args.unlock, wait=args.wait, request=args.request, persistent=args.persistent, fci=args.fci)
+    franka_lock_unlock.run(unlock=args.unlock, wait=args.wait, request=args.request, persistent=args.persistent, fci=args.fci, home=args.home)
 
     if args.persistent:
         print("Keeping persistent connection...")
