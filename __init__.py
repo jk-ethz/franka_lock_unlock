@@ -161,13 +161,14 @@ if __name__ == '__main__':
     parser.add_argument('hostname', help='The Franka Desk IP address or hostname, for example "1.2.3.4".')
     parser.add_argument('username', help='The Franka Desk username, usually "admin".')
     parser.add_argument('password', help='The Franka Desk password.')
-    parser.add_argument('-u', '--unlock', action='store_true', help='Unlock the brakes.')
+    parser.add_argument('-u', '--unlock', action='store_true', help='Unlock the brakes. Otherwise, lock them.')
     parser.add_argument('-l', '--relock', action='store_true', help='Relock the brakes on exit.')
     parser.add_argument('-w', '--wait', action='store_true', help='Wait in case the robot web UI is currently in use.')
     parser.add_argument('-r', '--request', action='store_true', help='Request control by confirming physical access to the robot in case the robot web UI is currently in use.')
     parser.add_argument('-p', '--persistent', action='store_true', help='Keep the connection to the robot open persistently.')
     parser.add_argument('-c', '--fci', action='store_true', help='Activate the FCI.')
     args, _ = parser.parse_known_args()
+    assert not args.relock or args.unlock, "Relocking without prior unlocking is not possible."
     assert not args.relock or args.persistent, "Relocking without persistence would cause an immediate unlock-lock cycle."
 
     franka_lock_unlock = FrankaLockUnlock(hostname=args.hostname, username=args.username, password=args.password, relock=args.relock)
