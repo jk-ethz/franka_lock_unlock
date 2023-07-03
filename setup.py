@@ -8,6 +8,7 @@ setup_args = generate_distutils_setup(
     packages=[],
     scripts=[
         '__init__.py',
+        'shutdown.py',
     ],
     install_requires=[]
 )
