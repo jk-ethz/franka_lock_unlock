@@ -10,15 +10,12 @@
 # https://github.com/frankaemika/libfranka/issues/63
 # https://github.com/ib101/DVK/blob/master/Code/DVK.py
 
-import requests
-from urllib.parse import urljoin
-import hashlib
-import base64
-import argparse
-from time import sleep
 from itertools import count
-import atexit
+from time import sleep
 from threading import Event
+import atexit
+import argparse
+from urllib.parse import urljoin
 from franka_client import FrankaClient
 
 

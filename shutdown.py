@@ -10,19 +10,31 @@
 # https://github.com/frankaemika/libfranka/issues/63
 # https://github.com/ib101/DVK/blob/master/Code/DVK.py
 
-import requests
-from urllib.parse import urljoin
-import hashlib
-import base64
-import argparse
-from time import sleep
 from itertools import count
+from time import sleep
+import argparse
+from urllib.parse import urljoin
+from httpx import RemoteProtocolError as HTTPxRemoteProtocolError
+from httpcore import RemoteProtocolError as HTTPRemoteProtocolError
 from franka_client import FrankaClient
 
 
 class FrankaShutdown(FrankaClient):
     def __init__(self, hostname: str, username: str, password: str, protocol: str = 'https'):
         super().__init__(hostname, username, password, protocol=protocol)
+
+    def _shutdown(self):
+        print("Shutting down...")
+        assert self._is_active_token(), "Cannot shutdown without an active control token."
+        try:
+            self._session.post(urljoin(self._hostname, '/admin/api/shutdown'), json={'token': self._token})
+        except (HTTPRemoteProtocolError, HTTPxRemoteProtocolError) as _:
+            # Sometimes, the server can shut down before sending a response, possibly raising an exception.
+            # Anyways, the server has still received the request, thus the robot shutdown procedure will start.
+            # So, we can ignore the cases when these exceptions are raised.
+            pass            
+        finally:
+            print("The robot is shutting down. Please wait for the yellow lights to turn off, then switch the control box off.")
 
     def run(self, wait: bool = False, request: bool = False) -> None:
         assert not request or wait, "Requesting control without waiting for obtaining control is not supported."

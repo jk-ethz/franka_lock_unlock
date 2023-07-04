@@ -11,10 +11,11 @@
 # https://github.com/ib101/DVK/blob/master/Code/DVK.py
 
 from abc import ABC, abstractmethod
-import requests
-from urllib.parse import urljoin
 import hashlib
 import base64
+import requests
+from urllib.parse import urljoin
+from http import HTTPStatus
 
 
 class FrankaClient(ABC):
@@ -42,7 +43,7 @@ class FrankaClient(ABC):
         login = self._session.post(urljoin(self._hostname, '/admin/api/login'), \
                                            json={'login': self._username, \
                                                  'password': self._encode_password(self._username, self._password)})
-        assert login.status_code == 200, "Error logging in."
+        assert login.status_code == HTTPStatus.OK, "Error logging in."
         self._session.cookies.set('authorization', login.text)
         self._logged_in = True
         print("Successfully logged in.")
@@ -51,22 +52,14 @@ class FrankaClient(ABC):
         print("Logging out...")
         assert self._logged_in
         logout = self._session.post(urljoin(self._hostname, '/admin/api/logout'))
-        assert logout.status_code == 200, "Error logging out"
+        assert logout.status_code == HTTPStatus.OK, "Error logging out"
         self._session.cookies.clear()
         self._logged_in = False
         print("Successfully logged out.")
 
-    def _shutdown(self):
-        print("Shutting down...")
-        assert self._is_active_token(), "Cannot shutdown without an active control token."
-        try:
-            self._session.post(urljoin(self._hostname, '/admin/api/shutdown'), json={'token': self._token})
-        finally:
-            print("The robot is shutting down. Please wait for the yellow lights to turn off, then switch the control box off.")
-
     def _get_active_token_id(self):
         token_query = self._session.get(urljoin(self._hostname, '/admin/api/control-token'))
-        assert token_query.status_code == 200, "Error getting control token status."
+        assert token_query.status_code == HTTPStatus.OK, "Error getting control token status."
         json = token_query.json()
         return None if json['activeToken'] is None else json['activeToken']['id']
 
@@ -82,7 +75,7 @@ class FrankaClient(ABC):
             return
         token_request = self._session.post(urljoin(self._hostname, f'/admin/api/control-token/request{"?force" if physically else ""}'), \
                                            json={'requestedBy': self._username})
-        assert token_request.status_code == 200, "Error requesting control token."
+        assert token_request.status_code == HTTPStatus.OK, "Error requesting control token."
         json = token_request.json()
         self._token = json['token']
         self._token_id = json['id']
