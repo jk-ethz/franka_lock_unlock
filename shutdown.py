@@ -13,9 +13,8 @@
 from itertools import count
 from time import sleep
 import argparse
+from requests.exceptions import ConnectionError
 from urllib.parse import urljoin
-from httpx import RemoteProtocolError as HTTPxRemoteProtocolError
-from httpcore import RemoteProtocolError as HTTPRemoteProtocolError
 from franka_client import FrankaClient
 
 
@@ -28,11 +27,11 @@ class FrankaShutdown(FrankaClient):
         assert self._is_active_token(), "Cannot shutdown without an active control token."
         try:
             self._session.post(urljoin(self._hostname, '/admin/api/shutdown'), json={'token': self._token})
-        except (HTTPRemoteProtocolError, HTTPxRemoteProtocolError) as _:
+        except ConnectionError as _:
             # Sometimes, the server can shut down before sending a response, possibly raising an exception.
             # Anyways, the server has still received the request, thus the robot shutdown procedure will start.
             # So, we can ignore the cases when these exceptions are raised.
-            pass            
+            pass
         finally:
             print("The robot is shutting down. Please wait for the yellow lights to turn off, then switch the control box off.")
 
@@ -59,7 +58,7 @@ class FrankaShutdown(FrankaClient):
                 finally:
                     self._shutdown()
         finally:
-            self._logout()
+            pass
 
 
 if __name__ == '__main__':
