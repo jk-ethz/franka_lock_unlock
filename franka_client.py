@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # Copyright jk-ethz
 # Released under GNU AGPL-3.0
 # Contact us for other licensing options.
