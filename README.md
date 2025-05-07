@@ -12,7 +12,7 @@ While the Franka Panda is a great robot for research and industrial use cases, i
 Ensure to have python3 installed.
 
 ```
-usage: ./__init__.py [-h] [-u] [-l] [-w] [-r] [-p] [-c] [-i] hostname username password
+usage: ./franka_lock_unlock.py [-h] [-u] [-l] [-w] [-r] [-p] [-c] [-i] hostname username password
 
 positional arguments:
   hostname          The Franka Desk IP address or hostname, for example "1.2.3.4".
@@ -39,26 +39,31 @@ The ROS package can be installed and invoked by the following commands.
 ### Installation
 
 ```
-git clone https://github.com/jk-ethz/franka_lock_unlock
-catkin build franka_lock_unlock
+git clone https://github.com/jk-ethz/franka_lock_unlock.git
+colcon build --packages-up-to franka_lock_unlock
 ```
 
 ### Simple Usage
 
-```
-rosrun franka_lock_unlock __init__.py <PARAMS>
+```sh
+ros2 run franka_lock_unlock franka_lock_unlock.py <PARAMS>
 ```
 
 ### Advanced Usage
 
-If you want to launch the `franka_control` node while unlocking the joints, ensure to add the `respawn=true` parameter to the node tag, such that the control node retries to connect to the robot until all joints have been fully unlocked and the FCI has been activated.
+If you want to launch the controller or gripper while unlocking the joints, ensure to add the `respawn=true` parameter to the node tag, such that the control node retries to connect to the robot until all joints have been fully unlocked and the FCI has been activated.
 
-<pre>
-&lt;node name="franka_control" pkg="franka_control" type="franka_control_node" output="screen" <b>respawn="true"</b> /&gt;
-</pre>
+```Python
+Node(
+    package='franka_gripper',
+    executable='franka_gripper_node',
+    name='panda_gripper',
+    respawn=True,
+)
+```
 
 The following launch file unlocks the joints, activates the FCI and connects to the robot via ROS. Also, it allows to re-lock the brakes automatically as soon as the launch file is exited via `SIGINT` or `SIGTERM` (`CTRL+C`).
 
-```
-roslaunch franka_lock_unlock franka_start.launch hostname:=<HOSTNAME> username:=<USERNAME> password:=<PASSWORD>
+```sh
+ros2 launch franka_lock_unlock franka_start.launch.xml hostname:=$HOSTNAME_OR_IP username:=$USERNAME password:=$PASSWORD
 ```
