@@ -35,15 +35,6 @@ class FrankaLockUnlock(FrankaClient):
             self._logout()
         print("Successfully cleaned up.")
 
-    def _release_token(self):
-        print("Releasing control token...")
-        token_delete = self._session.delete(urljoin(self._hostname, '/admin/api/control-token'), \
-                                                    json={'token': self._token})
-        assert token_delete.status_code == 200, "Error releasing control token."
-        self._token = None
-        self._token_id = None
-        print("Successfully released control token.")
-
     def _activate_fci(self):
         print("Activating FCI...")
         fci_request = self._session.post(urljoin(self._hostname, f'/admin/api/control-token/fci'), \
@@ -104,7 +95,7 @@ class FrankaLockUnlock(FrankaClient):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
-                                     prog = 'FrankaLockUnlock',
+                                     prog = '__init__.py',
                                      description = 'Lock or unlock the Franka Emika Panda joint brakes programmatically.',
                                      epilog = '(c) jk-ethz, https://github.com/jk-ethz'
                                     )

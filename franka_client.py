@@ -32,7 +32,7 @@ class FrankaClient(ABC):
     @staticmethod
     def _encode_password(username, password):
         bs = ','.join([str(b) for b in hashlib.sha256((f'{password}#{username}@franka').encode('utf-8')).digest()])
-        return base64.encodebytes(bs.encode('utf-8')).decode('utf-8')        
+        return base64.encodebytes(bs.encode('utf-8')).decode('utf-8')
 
     def _login(self):
         print("Logging in...")
@@ -79,6 +79,15 @@ class FrankaClient(ABC):
         self._token = json['token']
         self._token_id = json['id']
         print(f'Received control token is {self._token} with id {self._token_id}.')
+
+    def _release_token(self):
+        print("Releasing control token...")
+        token_delete = self._session.delete(urljoin(self._hostname, '/admin/api/control-token'), \
+                                                    json={'token': self._token})
+        assert token_delete.status_code == 200, "Error releasing control token."
+        self._token = None
+        self._token_id = None
+        print("Successfully released control token.")
 
     @abstractmethod
     def run(self) -> None:
