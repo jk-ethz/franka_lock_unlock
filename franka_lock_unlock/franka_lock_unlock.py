@@ -95,7 +95,7 @@ class FrankaLockUnlock(FrankaClient):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
-                                     prog = '__init__.py',
+                                     prog = 'franka_lock_unlock.py',
                                      description = 'Lock or unlock the Franka Emika Panda joint brakes programmatically.',
                                      epilog = '(c) jk-ethz, https://github.com/jk-ethz'
                                     )

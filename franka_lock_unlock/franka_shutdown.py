@@ -63,7 +63,7 @@ class FrankaShutdown(FrankaClient):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
-                                     prog = 'shutdown.py',
+                                     prog = 'franka_shutdown.py',
                                      description = 'Shutdown the Franka Emika Panda programmatically.',
                                      epilog = '(c) jk-ethz, https://github.com/jk-ethz'
                                     )
