@@ -9,7 +9,10 @@ Also supports the activation of the Franka Control Interface (FCI) and other opt
 While the Franka Panda is a great robot for research and industrial use cases, it lacks the option of unlocking or locking its joints from a different source other than the Franka Desk Web UI. However, this is crucial if you want to automate the entire startup and shutdown phase of the robot. That is now possible with the introduction of this package.
 
 ## Command-Line Usage
+
 Ensure to have python3 installed.
+
+To start the robot, run the following:
 
 ```
 usage: ./franka_lock_unlock.py [-h] [-u] [-l] [-w] [-r] [-p] [-c] [-i] hostname username password
@@ -30,6 +33,24 @@ optional arguments:
   -i, --home        Home the gripper.
 ```
 
+To shut the robot down, run the following:
+
+```
+usage: shutdown.py [-h] [-w] [-r] hostname username password
+
+Shutdown the Franka Emika Panda programmatically.
+
+positional arguments:
+  hostname       The Franka Desk IP address or hostname, for example "1.2.3.4".
+  username       The Franka Desk username, usually "admin".
+  password       The Franka Desk password.
+
+options:
+  -h, --help     show this help message and exit
+  -w, --wait     Wait in case the robot web UI is currently in use.
+  -r, --request  Request control by confirming physical access to the robot in case the robot web UI is currently in use.
+```
+
 ## ROS Package
 
 This repository exports a ROS package. This is useful for starting up the robot and FCI by means of a single launch file that also spawns the `franka_ros` interface at the same time. It will speed up your entire robot workflow dramatically.
@@ -47,6 +68,7 @@ colcon build --packages-up-to franka_lock_unlock
 
 ```sh
 ros2 run franka_lock_unlock franka_lock_unlock.py <PARAMS>
+ros2 run franka_lock_unlock shutdown.py <PARAMS>
 ```
 
 ### Advanced Usage
@@ -66,4 +88,10 @@ The following launch file unlocks the joints, activates the FCI and connects to 
 
 ```sh
 ros2 launch franka_lock_unlock franka_start.launch.xml hostname:=$HOSTNAME_OR_IP username:=$USERNAME password:=$PASSWORD
+```
+
+If you want to shut the robot down, you can use the related launch file with
+
+```
+ros2 launch franka_lock_unlock franka_shutdown.launch.xml hostname:=<HOSTNAME> username:=<USERNAME> password:=<PASSWORD>
 ```

@@ -22,5 +22,6 @@ setup(
     tests_require=['pytest'],
     scripts=[
         'franka_lock_unlock/franka_lock_unlock.py',
+        'franka_lock_unlock/franka_shutdown.py',
     ],
 )
