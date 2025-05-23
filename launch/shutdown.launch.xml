@@ -1,5 +1,3 @@
-<?xml version="1.0" ?>
-
 <launch>
     <arg name="hostname"/>
     <arg name="username" default="admin"/>
@@ -7,8 +5,8 @@
 
     <node name="franka_shutdown"
           pkg="franka_lock_unlock"
-          type="shutdown"
+          exec="shutdown"
           output="screen"
-          args="$(arg hostname) $(arg username) $(arg password) -w -r"
+          args="$(var hostname) $(var username) $(var password) -w -r"
     />
 </launch>
