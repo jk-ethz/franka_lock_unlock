@@ -36,7 +36,7 @@ optional arguments:
 To shut the robot down, run the following:
 
 ```
-usage: shutdown.py [-h] [-w] [-r] hostname username password
+usage: ./franka_shutdown.py [-h] [-w] [-r] hostname username password
 
 Shutdown the Franka Emika Panda programmatically.
 
@@ -68,7 +68,7 @@ colcon build --packages-up-to franka_lock_unlock
 
 ```sh
 ros2 run franka_lock_unlock franka_lock_unlock.py <PARAMS>
-ros2 run franka_lock_unlock shutdown.py <PARAMS>
+ros2 run franka_lock_unlock franka_shutdown.py <PARAMS>
 ```
 
 ### Advanced Usage
