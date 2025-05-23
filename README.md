@@ -67,8 +67,8 @@ colcon build --packages-up-to franka_lock_unlock
 ### Simple Usage
 
 ```sh
-ros2 run franka_lock_unlock franka_lock_unlock.py <PARAMS>
-ros2 run franka_lock_unlock franka_shutdown.py <PARAMS>
+ros2 run franka_lock_unlock lock_unlock.py <PARAMS>
+ros2 run franka_lock_unlock shutdown.py <PARAMS>
 ```
 
 ### Advanced Usage
@@ -87,11 +87,11 @@ Node(
 The following launch file unlocks the joints, activates the FCI and connects to the robot via ROS. Also, it allows to re-lock the brakes automatically as soon as the launch file is exited via `SIGINT` or `SIGTERM` (`CTRL+C`).
 
 ```sh
-ros2 launch franka_lock_unlock franka_start.launch.xml hostname:=$HOSTNAME_OR_IP username:=$USERNAME password:=$PASSWORD
+ros2 launch franka_lock_unlock start.launch.xml hostname:=$HOSTNAME_OR_IP username:=$USERNAME password:=$PASSWORD
 ```
 
 If you want to shut the robot down, you can use the related launch file with
 
 ```sh
-ros2 launch franka_lock_unlock franka_shutdown.launch.xml hostname:=<HOSTNAME> username:=<USERNAME> password:=<PASSWORD>
+ros2 launch franka_lock_unlock shutdown.launch.xml hostname:=<HOSTNAME> username:=<USERNAME> password:=<PASSWORD>
 ```

@@ -16,7 +16,7 @@ from threading import Event
 import atexit
 import argparse
 from urllib.parse import urljoin
-from franka_client import FrankaClient
+from .franka_client import FrankaClient
 
 
 class FrankaLockUnlock(FrankaClient):
@@ -93,7 +93,7 @@ class FrankaLockUnlock(FrankaClient):
                 self._logout()
 
 
-if __name__ == '__main__':
+def main():
     parser = argparse.ArgumentParser(
                                      prog = 'franka_lock_unlock.py',
                                      description = 'Lock or unlock the Franka Emika Panda joint brakes programmatically.',
@@ -119,3 +119,6 @@ if __name__ == '__main__':
     if args.persistent:
         print("Keeping persistent connection...")
         Event().wait()
+
+if __name__ == '__main__':
+    main()

@@ -1,12 +1,14 @@
+<?xml version="1.0" ?>
+
 <launch>
     <arg name="hostname"/>
     <arg name="username" default="admin"/>
     <arg name="password"/>
 
-    <node name="franka_lock_unlock"
+    <node name="franka_shutdown"
           pkg="franka_lock_unlock"
-          exec="franka_lock_unlock.py"
+          type="shutdown"
           output="screen"
-          args="$(var hostname) $(var username) $(var password) -u -l -w -r -p -c"
+          args="$(arg hostname) $(arg username) $(arg password) -w -r"
     />
 </launch>

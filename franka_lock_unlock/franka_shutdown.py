@@ -15,7 +15,7 @@ from time import sleep
 import argparse
 from requests.exceptions import ConnectionError
 from urllib.parse import urljoin
-from franka_client import FrankaClient
+from .franka_client import FrankaClient
 
 
 class FrankaShutdown(FrankaClient):
@@ -61,7 +61,7 @@ class FrankaShutdown(FrankaClient):
             pass
 
 
-if __name__ == '__main__':
+def main():
     parser = argparse.ArgumentParser(
                                      prog = 'franka_shutdown.py',
                                      description = 'Shutdown the Franka Emika Panda programmatically.',
@@ -76,3 +76,6 @@ if __name__ == '__main__':
 
     franka_lock_unlock = FrankaShutdown(hostname=args.hostname, username=args.username, password=args.password)
     franka_lock_unlock.run(wait=args.wait, request=args.request)
+
+if __name__ == '__main__':
+    main()

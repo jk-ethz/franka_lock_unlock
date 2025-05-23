@@ -20,8 +20,10 @@ setup(
     description='Lock or unlock the Franka Emika Panda joint brakes programmatically.',
     license='AGPLv3',
     tests_require=['pytest'],
-    scripts=[
-        'franka_lock_unlock/franka_lock_unlock.py',
-        'franka_lock_unlock/franka_shutdown.py',
-    ],
+    entry_points={
+        'console_scripts': [
+            'lock_unlock = franka_lock_unlock.franka_lock_unlock:main',
+            'shutdown = franka_lock_unlock.franka_shutdown:main',
+        ],
+    },
 )
