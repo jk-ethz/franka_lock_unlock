@@ -93,7 +93,7 @@ class FrankaLockUnlock(FrankaClient):
                 self._logout()
 
 
-def main():
+def main() -> int:
     parser = argparse.ArgumentParser(
                                      prog = 'franka_lock_unlock.py',
                                      description = 'Lock or unlock the Franka Emika Panda joint brakes programmatically.',
@@ -117,8 +117,16 @@ def main():
     franka_lock_unlock.run(unlock=args.unlock, wait=args.wait, request=args.request, persistent=args.persistent, fci=args.fci, home=args.home)
 
     if args.persistent:
-        print("Keeping persistent connection...")
-        Event().wait()
+        try:
+            print("Keeping persistent connection...")
+            Event().wait()
+        except KeyboardInterrupt:
+            print("Exiting...")
+            Event().set()
+            return 0
+        except Exception as e:
+            print(f"error: {e}")
+            return 1
 
 if __name__ == '__main__':
     main()
