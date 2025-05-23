@@ -59,7 +59,7 @@ The ROS package can be installed and invoked by the following commands.
 
 ### Installation
 
-```
+```sh
 git clone https://github.com/jk-ethz/franka_lock_unlock.git
 colcon build --packages-up-to franka_lock_unlock
 ```
@@ -92,6 +92,6 @@ ros2 launch franka_lock_unlock franka_start.launch.xml hostname:=$HOSTNAME_OR_IP
 
 If you want to shut the robot down, you can use the related launch file with
 
-```
+```sh
 ros2 launch franka_lock_unlock franka_shutdown.launch.xml hostname:=<HOSTNAME> username:=<USERNAME> password:=<PASSWORD>
 ```
