@@ -67,8 +67,8 @@ colcon build --packages-up-to franka_lock_unlock
 ### Simple Usage
 
 ```sh
-ros2 run franka_lock_unlock franka_lock_unlock.py <PARAMS>
-ros2 run franka_lock_unlock franka_shutdown.py <PARAMS>
+ros2 run franka_lock_unlock franka_lock_unlock <PARAMS>
+ros2 run franka_lock_unlock franka_shutdown <PARAMS>
 ```
 
 ### Advanced Usage
