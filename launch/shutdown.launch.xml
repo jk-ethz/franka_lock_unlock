@@ -5,7 +5,7 @@
 
     <node name="franka_shutdown"
           pkg="franka_lock_unlock"
-          exec="shutdown"
+          exec="franka_shutdown"
           output="screen"
           emulate_tty="True"
           args="$(var hostname) $(var username) $(var password) -w -r"

@@ -5,7 +5,7 @@
 
     <node name="franka_lock_unlock"
           pkg="franka_lock_unlock"
-          exec="lock_unlock"
+          exec="franka_lock_unlock"
           output="screen"
           emulate_tty="True"
           args="$(var hostname) $(var username) $(var password) -u -l -w -r -p -c"

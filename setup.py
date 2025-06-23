@@ -22,8 +22,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'lock_unlock = franka_lock_unlock.franka_lock_unlock:main',
-            'shutdown = franka_lock_unlock.franka_shutdown:main',
+            'franka_lock_unlock = franka_lock_unlock.franka_lock_unlock:main',
+            'franka_shutdown = franka_lock_unlock.franka_shutdown:main',
         ],
     },
 )
