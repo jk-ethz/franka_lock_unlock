@@ -125,7 +125,7 @@ def main() -> int:
             Event().set()
             return 0
         except Exception as e:
-            print(f"error: {e}")
+            print(f"Error: {e}")
             return 1
 
 if __name__ == '__main__':
