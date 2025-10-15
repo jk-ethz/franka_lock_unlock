@@ -5,14 +5,13 @@ find_package(catkin REQUIRED)
 
 catkin_python_setup()
 
-catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES franka_lock_unlock
-#  CATKIN_DEPENDS other_catkin_pkg
-#  DEPENDS system_lib
+catkin_package()
+
+# catkin-compatible entry points
+catkin_install_python(PROGRAMS
+  scripts/franka_lock_unlock
+  scripts/franka_shutdown
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
-include_directories(
-# include
-# ${catkin_INCLUDE_DIRS}
-)
+install(DIRECTORY launch/ DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})

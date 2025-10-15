@@ -11,6 +11,4 @@
   <url type="website">https://github.com/jk-ethz/franka_lock_unlock</url>
 
   <buildtool_depend>catkin</buildtool_depend>
-  <depend>rospy</depend>
-
 </package>

@@ -1,0 +1,13 @@
+<launch>
+    <arg name="hostname"/>
+    <arg name="username" default="admin"/>
+    <arg name="password"/>
+
+    <node name="franka_shutdown"
+          pkg="franka_lock_unlock"
+          type="franka_shutdown"
+          output="screen"
+          args="$(arg hostname) $(arg username) $(arg password) -w -r"
+          required="true"
+    />
+</launch>
