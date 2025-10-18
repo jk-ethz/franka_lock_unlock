@@ -61,8 +61,8 @@ class FrankaClient(ABC):
         assert self._is_active_token(), "Cannot shutdown without an active control token."
         try:
             self._session.post(urljoin(self._hostname, '/admin/api/shutdown'), json={'token': self._token})
-        except ConnectionError as _:
-            # Sometimes, the server can shut down before sending a response, possibly raising an exception.
+        except requests.exceptions.RequestException as _:
+            # Sometimes, the server can shut down before sending a complete response, possibly raising an exception.
             # Anyways, the server has still received the request, thus the robot shutdown procedure will start.
             # So, we can ignore the cases when these exceptions are raised.
             pass
